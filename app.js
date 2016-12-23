@@ -16,7 +16,11 @@ console.log('server started');
 
 function *addUser(){
     var userFromRequest = yield parse(this);
+    if(!userFromRequest.name) {
+        this.throw(400, "Name is required!");
+    }
     var insertedUser = yield users.insert(userFromRequest);
+
     this.set('location', '/user/'+insertedUser._id);
     this.status = 200;
 }
